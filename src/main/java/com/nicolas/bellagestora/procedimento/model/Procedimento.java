@@ -1,11 +1,12 @@
 package com.nicolas.bellagestora.procedimento.model;
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -26,5 +27,12 @@ public class Procedimento {
 
     @Column
     private BigDecimal valor;
+
+    public Procedimento(String nome, String descricao, String observacaoDono, BigDecimal valor){
+        this.nome = nome;
+        this.descricao = descricao;
+        this.observacaoDono = observacaoDono;
+        this.valor = valor;
+    }
 
 }
