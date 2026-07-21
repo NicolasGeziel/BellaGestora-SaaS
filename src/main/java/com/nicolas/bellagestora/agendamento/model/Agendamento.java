@@ -8,9 +8,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Locale;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -39,5 +39,14 @@ public class Agendamento {
 
     @Column(nullable = false)
     private String email;
+
+    public Agendamento (Procedimento procedimento, LocalDate data, LocalTime horario, String nomeCliente, BigDecimal valorCobrado, String email){
+        this.procedimento = procedimento;
+        this.data = data;
+        this.horario = horario;
+        this.nomeCliente = nomeCliente;
+        this.valorCobrado = valorCobrado;
+        this.email = email;
+    }
 
 }

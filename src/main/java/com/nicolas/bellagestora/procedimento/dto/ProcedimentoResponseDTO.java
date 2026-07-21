@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record ProcedimentoResponseDTO(
-        @NotBlank(message = "Nome obrigatorio")
+        @NotBlank
         String nome,
         @NotBlank
         String descricao,

@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record ProcedimentoRequestDTO(
-                @NotBlank(message = "Nome obrigatorio")
+                @NotBlank
                 String nome,
                 @NotBlank
                 String descricao,

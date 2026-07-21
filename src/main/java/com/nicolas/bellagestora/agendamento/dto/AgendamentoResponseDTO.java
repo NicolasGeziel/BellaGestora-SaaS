@@ -1,5 +1,6 @@
 package com.nicolas.bellagestora.agendamento.dto;
 
+import com.nicolas.bellagestora.procedimento.dto.ProcedimentoResponseDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -12,15 +13,13 @@ import java.time.LocalTime;
 public record AgendamentoResponseDTO(
         @NotNull
         Long procedimento_id,
-
         @NotNull
         @Future
         LocalDate data,
-
         @NotNull
         LocalTime horario,
-
         @NotBlank
-        String nomeCliente
+        String nomeCliente,
+        ProcedimentoResponseDTO procedimentoDTO
 ){
 }
