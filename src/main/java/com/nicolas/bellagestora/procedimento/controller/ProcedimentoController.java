@@ -4,7 +4,9 @@ import com.nicolas.bellagestora.procedimento.dto.ProcedimentoRequestDTO;
 import com.nicolas.bellagestora.procedimento.dto.ProcedimentoResponseDTO;
 import com.nicolas.bellagestora.procedimento.model.Procedimento;
 import com.nicolas.bellagestora.procedimento.repository.ProcedimentoRepository;
+import com.nicolas.bellagestora.procedimento.services.ProcedimentoService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,74 +17,34 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/procedimentos")
 public class ProcedimentoController {
-
-    private final ProcedimentoRepository repository;
-    public ProcedimentoController(ProcedimentoRepository repository){
-        this.repository = repository;
-    }
+    @Autowired
+    private ProcedimentoService service;
 
     @PostMapping
     public ResponseEntity<ProcedimentoResponseDTO> CriarProcedimento(@RequestBody @Valid ProcedimentoRequestDTO requestDTO) {
-        Procedimento procedimento = new Procedimento(
-                requestDTO.nome(),requestDTO.descricao(),
-                requestDTO.observacaoDono(), requestDTO.valor()
-        );
-        Procedimento salvar = repository.save(procedimento);
-        ProcedimentoResponseDTO responseDTO = new ProcedimentoResponseDTO(
-          salvar.getNome(),salvar.getDescricao(),salvar.getValor()
-        );
+        ProcedimentoResponseDTO responseDTO = service.criarProcedimento(requestDTO);
         return ResponseEntity.status(201).body(responseDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<ProcedimentoResponseDTO>> ExibirProcedimentos(){
-        List<Procedimento>  procedimentos = repository.findAll();
-        List<ProcedimentoResponseDTO> responseDTOS = procedimentos.stream().
-                map( p-> new ProcedimentoResponseDTO(
-                  p.getNome(),p.getDescricao(),p.getValor()
-                )
-        ).toList();
+        List<ProcedimentoResponseDTO> responseDTOS = service.exibirProcedimentos();
         return ResponseEntity.ok(responseDTOS);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProcedimentoResponseDTO> PegarProcedimento(@PathVariable Long id){
-        return repository.findById(id).map(p->
-                new ProcedimentoResponseDTO(
-                p.getNome(),
-                p.getDescricao(),
-                p.getValor()
-                )
-        ).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.pegarProcedimento(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProcedimentoResponseDTO> AtualizarProcedimento(@PathVariable Long id, @RequestBody @Valid ProcedimentoRequestDTO requestDTO) {
-
-        return repository.findById(id)
-                .map(p -> {
-                    p.setNome(requestDTO.nome());
-                    p.setDescricao(requestDTO.descricao());
-                    p.setObservacaoDono(requestDTO.observacaoDono());
-                    p.setValor(requestDTO.valor());
-
-                    Procedimento atualizado = repository.save(p);
-
-                    ProcedimentoResponseDTO responseDTO = new ProcedimentoResponseDTO(
-                            atualizado.getNome(),
-                            atualizado.getDescricao(),
-                            atualizado.getValor()
-                    );
-                    return ResponseEntity.ok(responseDTO);
-                }).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.atualizarProcedimento(id,requestDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarProcedimento(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(p -> {
-                    repository.delete(p);
-                    return ResponseEntity.noContent().build();
-                }).orElse(ResponseEntity.notFound().build());
+        service.deletarProcedimento(id);
+        return ResponseEntity.noContent().build();
     }
 }

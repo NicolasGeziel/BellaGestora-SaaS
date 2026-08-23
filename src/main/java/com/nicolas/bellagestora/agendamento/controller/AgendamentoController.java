@@ -2,6 +2,7 @@ package com.nicolas.bellagestora.agendamento.controller;
 
 import com.nicolas.bellagestora.agendamento.dto.AgendamentoRequestDTO;
 import com.nicolas.bellagestora.agendamento.dto.AgendamentoResponseDTO;
+import com.nicolas.bellagestora.agendamento.dto.AtualizarStatusDTO;
 import com.nicolas.bellagestora.agendamento.service.AgendamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,12 @@ public class AgendamentoController {
     @PutMapping("/{id}")
     public ResponseEntity<AgendamentoResponseDTO> atualizar(@PathVariable Long id,@RequestBody @Valid AgendamentoRequestDTO requestDTO) {
         AgendamentoResponseDTO response = service.atualizar(id, requestDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<AgendamentoResponseDTO> mudarStatus(@PathVariable Long id, @RequestBody @Valid AtualizarStatusDTO statusDTO) {
+        AgendamentoResponseDTO response = service.mudarStatus(id, statusDTO.status());
         return ResponseEntity.ok(response);
     }
 

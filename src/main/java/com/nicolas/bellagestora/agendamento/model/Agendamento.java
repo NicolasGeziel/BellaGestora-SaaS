@@ -1,5 +1,6 @@
 package com.nicolas.bellagestora.agendamento.model;
 import com.nicolas.bellagestora.procedimento.model.Procedimento;
+import com.nicolas.bellagestora.usuario.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,14 @@ public class Agendamento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "procedimento_id", nullable = false)
     private Procedimento procedimento;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusAgendamento status;
 
     @Column(nullable = false)
     private LocalDate data;
