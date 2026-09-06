@@ -27,6 +27,7 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
           console.log("Login feito com sucesso")
+          this.router.navigate(['/procedimentos']);
         },
         error:(err)=>{
           this.mensagemErro='Login invalido, tente novamente!'

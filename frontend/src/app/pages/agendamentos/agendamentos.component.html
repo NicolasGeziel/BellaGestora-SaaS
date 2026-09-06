@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>Gestão de Agendamentos</h2>
+  
+  <table class="agendamentos-table">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Serviço</th>
+        <th>Data e Hora</th>
+        <th>Status</th>
+        <th *ngIf="isAdmin">Ações (ADMIN)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of agendamentos">
+        <td>{{ a.nomeCliente }}</td>
+        <td>{{ a.procedimento?.nome }}</td>
+        <td>{{ a.data }} às {{ a.horario }}</td>
+        <td>
+          <span class="badge" [ngClass]="a.status | lowercase">
+            {{ a.status }}
+          </span>
+        </td>
+        
+        <td *ngIf="isAdmin" class="actions-cell">
+          <button class="btn-confirmar" 
+                  *ngIf="a.status === 'PENDENTE'" 
+                  (click)="atualizarStatus(a.id, 'CONFIRMADO')">✓ Confirmar</button>
+          
+          <button class="btn-cancelar" 
+                  *ngIf="a.status !== 'CANCELADO'" 
+                  (click)="atualizarStatus(a.id, 'CANCELADO')">✕ Cancelar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

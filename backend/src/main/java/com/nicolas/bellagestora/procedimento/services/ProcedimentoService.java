@@ -34,7 +34,7 @@ public class ProcedimentoService {
         procedimento.setUser(usuarioLogado);
 
         Procedimento salvo = procedimentoRepository.save(procedimento);
-        return new ProcedimentoResponseDTO(salvo.getNome(), salvo.getDescricao(), salvo.getValor());
+        return new ProcedimentoResponseDTO(salvo.getId(), salvo.getNome(), salvo.getDescricao(), salvo.getValor());
     }
 
     public List<ProcedimentoResponseDTO> exibirProcedimentos() {
@@ -48,7 +48,7 @@ public class ProcedimentoService {
         }
 
         return procedimentos.stream()
-                .map(p -> new ProcedimentoResponseDTO(p.getNome(), p.getDescricao(), p.getValor()))
+                .map(p -> new ProcedimentoResponseDTO(p.getId(),p.getNome(), p.getDescricao(), p.getValor()))
                 .toList();
     }
 
@@ -56,7 +56,7 @@ public class ProcedimentoService {
         User usuarioLogado = getUsuarioLogado();
         Procedimento procedimento = buscarEValidarDono(id, usuarioLogado);
 
-        return new ProcedimentoResponseDTO(procedimento.getNome(), procedimento.getDescricao(), procedimento.getValor());
+        return new ProcedimentoResponseDTO(procedimento.getId(), procedimento.getNome(), procedimento.getDescricao(), procedimento.getValor());
     }
 
     public ProcedimentoResponseDTO atualizarProcedimento(Long id, ProcedimentoRequestDTO requestDTO) {
@@ -69,7 +69,7 @@ public class ProcedimentoService {
         procedimento.setValor(requestDTO.valor());
 
         Procedimento atualizado = procedimentoRepository.save(procedimento);
-        return new ProcedimentoResponseDTO(atualizado.getNome(), atualizado.getDescricao(), atualizado.getValor());
+        return new ProcedimentoResponseDTO(atualizado.getId(), atualizado.getNome(), atualizado.getDescricao(), atualizado.getValor());
     }
 
     public void deletarProcedimento(Long id) {

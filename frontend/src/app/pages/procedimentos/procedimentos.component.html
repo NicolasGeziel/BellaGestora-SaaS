@@ -1,0 +1,305 @@
+<!-- NAVBAR -->
+<nav class="top-nav">
+  <div class="nav-brand">
+    BellaGestora
+  </div>
+
+  <div class="nav-links">
+    <button
+      class="btn-nav"
+      type="button"
+      (click)="irParaAgendamentos()"
+    >
+      Agendamentos
+    </button>
+
+    <button
+      class="btn-nav btn-sair"
+      type="button"
+      (click)="sair()"
+    >
+      Sair
+    </button>
+  </div>
+</nav>
+
+
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="container">
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <div>
+      <h2>Catálogo de Procedimentos</h2>
+    </div>
+
+    <button
+      *ngIf="isAdmin"
+      class="btn-primary"
+      type="button"
+      (click)="abrirModalNovo()"
+    >
+      + Novo Procedimento
+    </button>
+  </div>
+
+
+  <!-- PESQUISA -->
+  <div class="search-container">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar procedimento por nome..."
+      (input)="filtrarProcedimentos($event)"
+    />
+  </div>
+
+
+  <!-- MODAL: NOVO / EDITAR PROCEDIMENTO -->
+  <div
+    class="modal-overlay"
+    *ngIf="mostrarModal && isAdmin"
+  >
+    <div class="modal-content">
+
+      <h3>
+        {{ modoEdicao ? 'Editar Serviço' : 'Cadastrar Novo Serviço' }}
+      </h3>
+
+      <form
+        [formGroup]="procedimentoForm"
+        (ngSubmit)="salvarProcedimento()"
+      >
+
+        <div class="input-group">
+          <label>Nome do Procedimento</label>
+
+          <input
+            type="text"
+            formControlName="nome"
+            placeholder="Ex: Limpeza de Pele"
+          />
+        </div>
+
+
+        <div class="input-group">
+          <label>Descrição</label>
+
+          <input
+            type="text"
+            formControlName="descricao"
+            placeholder="Detalhes para o cliente..."
+          />
+        </div>
+
+
+        <div class="input-group">
+          <label>Observação Interna (ADMIN)</label>
+
+          <input
+            type="text"
+            formControlName="observacaoDono"
+            placeholder="Anotações técnicas..."
+          />
+        </div>
+
+
+        <div class="input-group">
+          <label>Valor (R$)</label>
+
+          <input
+            type="number"
+            formControlName="valor"
+            placeholder="150.00"
+          />
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="procedimentoForm.invalid"
+          >
+            {{ modoEdicao ? 'Atualizar' : 'Salvar' }}
+          </button>
+
+          <button
+            type="button"
+            class="btn-cancelar"
+            (click)="fecharModal()"
+          >
+            Cancelar
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <!-- MODAL: SOLICITAÇÃO DE AGENDAMENTO -->
+  <div
+    class="modal-overlay"
+    *ngIf="mostrarModalAgendamento && !isAdmin"
+  >
+    <div class="modal-content">
+
+      <h3>
+        Agendar: {{ procedimentoSelecionado?.nome }}
+      </h3>
+
+      <p
+        class="valor"
+        style="margin-top: -10px; margin-bottom: 20px;"
+      >
+        Valor do Serviço:
+        R$ {{ procedimentoSelecionado?.valor }}
+      </p>
+
+
+      <form
+        [formGroup]="agendamentoForm"
+        (ngSubmit)="confirmarAgendamento()"
+      >
+
+        <div class="input-group">
+          <label>Seu Nome</label>
+
+          <input
+            type="text"
+            formControlName="nomeCliente"
+            placeholder="Como quer ser chamado?"
+          />
+        </div>
+
+
+        <div class="input-group">
+          <label>E-mail de Contato</label>
+
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="seu@email.com"
+          />
+        </div>
+
+
+        <div class="input-group">
+          <label>Data da Reserva</label>
+
+          <input
+            type="date"
+            formControlName="data"
+          />
+        </div>
+
+
+        <div class="input-group">
+          <label>Horário</label>
+
+          <input
+            type="time"
+            formControlName="horario"
+          />
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="agendamentoForm.invalid"
+          >
+            Confirmar Pedido
+          </button>
+
+          <button
+            type="button"
+            class="btn-cancelar"
+            (click)="fecharModalAgendamento()"
+          >
+            Cancelar
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <!-- LISTA DE PROCEDIMENTOS -->
+  <section class="grid-procedimentos">
+
+    <article
+      class="card"
+      *ngFor="let p of procedimentos"
+    >
+
+      <div class="card-info">
+
+        <h3>
+          {{ p.nome }}
+        </h3>
+
+        <p class="descricao">
+          {{ p.descricao }}
+        </p>
+
+        <p class="valor">
+          R$ {{ p.valor }}
+        </p>
+
+      </div>
+
+
+      <div class="card-actions">
+
+        <!-- ADMIN -->
+        <ng-container *ngIf="isAdmin">
+
+          <button
+            class="btn-edit"
+            type="button"
+            (click)="abrirModalEditar(p)"
+          >
+            Editar
+          </button>
+
+          <button
+            class="btn-delete"
+            type="button"
+            (click)="deletar(p.id)"
+          >
+            Excluir
+          </button>
+
+        </ng-container>
+
+
+        <!-- USUARIO -->
+        <ng-container *ngIf="!isAdmin">
+
+          <button
+            class="btn-agendar"
+            type="button"
+            (click)="abrirModalAgendamento(p)"
+          >
+            Solicitar Agendamento
+          </button>
+
+        </ng-container>
+
+      </div>
+
+    </article>
+
+  </section>
+
+</main>

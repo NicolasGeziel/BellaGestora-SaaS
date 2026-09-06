@@ -158,6 +158,7 @@ public class AgendamentoService {
     private AgendamentoResponseDTO converterParaDtoComProcedimento(Agendamento agendamento) {
         String nomeProfissional = agendamento.getProcedimento().getUser().getLogin();
         ProcedimentoResponseDTO procDTO = new ProcedimentoResponseDTO(
+                agendamento.getProcedimento().getId(),
                 agendamento.getProcedimento().getNome(),
                 agendamento.getProcedimento().getDescricao(),
                 agendamento.getProcedimento().getValor()

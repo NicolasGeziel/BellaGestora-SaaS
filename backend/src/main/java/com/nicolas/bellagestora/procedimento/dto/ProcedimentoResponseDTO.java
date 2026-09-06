@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record ProcedimentoResponseDTO(
+        Long id,
         @NotBlank
         String nome,
         @NotBlank
