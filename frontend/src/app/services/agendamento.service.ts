@@ -11,11 +11,8 @@ export class AgendamentoService {
   private authService = inject(AuthService);
   private apiUrl = 'http://localhost:8080/agendamentos';
 
-  private getHeaders(): { headers: HttpHeaders } {
-    const token = this.authService.getToken();
-    return {
-      headers: new HttpHeaders({ 'Authorization': `Bearer ${token}` })
-    };
+  private getHeaders() {
+    return { headers: new HttpHeaders({ 'Authorization': `Bearer ${this.authService.getToken()}` }) };
   }
 
   listarAgendamentos(): Observable<any[]> {
@@ -24,6 +21,14 @@ export class AgendamentoService {
 
   criarAgendamento(dados: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, dados, this.getHeaders());
+  }
+
+  atualizarAgendamento(id: number, dados: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, dados, this.getHeaders());
+  }
+
+  deletarAgendamento(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, this.getHeaders());
   }
 
   mudarStatus(id: number, status: string): Observable<any> {

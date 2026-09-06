@@ -23,6 +23,8 @@ public record AgendamentoResponseDTO(
         String nomeCliente,
         ProcedimentoResponseDTO procedimentoDTO,
         StatusAgendamento statusAgendamento,
-        String nomeProfissional
+        String nomeProfissional,
+        @Email
+        String email
 ){
 }

@@ -1,6 +1,35 @@
+<nav class="top-nav">
+  <div class="nav-brand">
+    BellaGestora
+  </div>
+
+  <div class="nav-links">
+    <button 
+    class="btn-nav" 
+    (click)="voltarParaProcedimentos()"
+    > 
+     Procedimentos 
+    </button>
+
+    <button
+      class="btn-nav btn-sair"
+      type="button"
+      (click)="sair()"
+    >
+      Sair
+    </button>
+  </div>
+</nav>
+
+<main class="container">
+   <!-- CABEÇALHO -->
+  <div class="header">
+    <div>
+      <h2>Gestão de Agendamentos</h2>
+    </div>
+  </div>
+
 <div class="container">
-  <h2>Gestão de Agendamentos</h2>
-  
   <table class="agendamentos-table">
     <thead>
       <tr>
@@ -8,30 +37,66 @@
         <th>Serviço</th>
         <th>Data e Hora</th>
         <th>Status</th>
-        <th *ngIf="isAdmin">Ações (ADMIN)</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let a of agendamentos">
         <td>{{ a.nomeCliente }}</td>
-        <td>{{ a.procedimento?.nome }}</td>
+        <td>{{ a.procedimentoDTO?.nome }} (R$ {{ a.procedimentoDTO?.valor }})</td>
         <td>{{ a.data }} às {{ a.horario }}</td>
         <td>
-          <span class="badge" [ngClass]="a.status | lowercase">
-            {{ a.status }}
+          <span class="badge" [ngClass]="a.statusAgendamento | lowercase">
+            {{ a.statusAgendamento }}
           </span>
         </td>
         
-        <td *ngIf="isAdmin" class="actions-cell">
-          <button class="btn-confirmar" 
-                  *ngIf="a.status === 'PENDENTE'" 
-                  (click)="atualizarStatus(a.id, 'CONFIRMADO')">✓ Confirmar</button>
+        <td class="actions-cell">
           
-          <button class="btn-cancelar" 
-                  *ngIf="a.status !== 'CANCELADO'" 
-                  (click)="atualizarStatus(a.id, 'CANCELADO')">✕ Cancelar</button>
+          <!-- ADMIN: APENAS ALTERA STATUS -->
+          <ng-container *ngIf="authService.isAdmin()">
+            <button class="btn-confirmar" *ngIf="a.statusAgendamento === 'PENDENTE'" (click)="atualizarStatus(a.agendamento_id, 'CONFIRMADO')">✓ Confirmar</button>
+            <button class="btn-cancelar" *ngIf="a.statusAgendamento !== 'CANCELADO'" (click)="atualizarStatus(a.agendamento_id, 'CANCELADO')">✕ Cancelar</button>
+          </ng-container>
+
+          <!-- USER: EDITA E EXCLUI -->
+          <ng-container *ngIf="!authService.isAdmin()">
+            <button class="btn-edit" (click)="abrirModalEditar(a)">Editar</button>
+            <button class="btn-delete" (click)="deletar(a.agendamento_id)">Excluir</button>
+          </ng-container>
+          
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+
+<!-- Modal Edição (Exclusivo USER) -->
+<div class="modal-overlay" *ngIf="mostrarModalEdicao && !authService.isAdmin()">
+  <div class="modal-content">
+    <h3>Editar Agendamento</h3>
+    <form [formGroup]="edicaoForm" (ngSubmit)="salvarEdicao()">
+      <div class="input-group">
+        <label>Nome</label>
+        <input type="text" formControlName="nomeCliente">
+      </div>
+      <div class="input-group">
+        <label>Confirme seu E-mail</label>
+        <input type="email" formControlName="email">
+      </div>
+      <div class="input-group">
+        <label>Data</label>
+        <input type="date" formControlName="data">
+      </div>
+      <div class="input-group">
+        <label>Horário</label>
+        <input type="time" formControlName="horario">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="edicaoForm.invalid">Salvar</button>
+        <button type="button" class="btn-cancelar" (click)="fecharModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+</main>

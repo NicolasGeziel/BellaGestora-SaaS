@@ -1,15 +1,289 @@
-.container { padding: 2rem; max-width: 1000px; margin: 0 auto; font-family: sans-serif; }
-.agendamentos-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.agendamentos-table th, .agendamentos-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
-.agendamentos-table th { background-color: #f8f9fa; font-weight: 600; color: #333; }
+/*RESET BASE*/
+:host {
+  display: block;
+  width: 92%;
+  padding: 0;
+  margin: 0;
+}
 
-/* Badges Dinâmicas de Status */
-.badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
-.pendente { background-color: #fff3cd; color: #856404; }
-.confirmado { background-color: #d4edda; color: #155724; }
-.cancelado { background-color: #f8d7da; color: #721c24; text-decoration: line-through; }
+/*BARRA DE NAVEGAÇÃO*/
 
-.actions-cell { display: flex; gap: 0.5rem; }
-.actions-cell button { padding: 0.4rem 0.8rem; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-.btn-confirmar { background-color: #28a745; color: white; }
-.btn-cancelar { background-color: #dc3545; color: white; }
+.top-nav {
+  width: 100%;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 5%;
+
+  background-color: #003366;
+  color: white;
+
+  border-radius: 0;
+  margin: 0;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.nav-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-nav {
+  height: 40px;
+  padding: 0 1.1rem;
+
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-nav:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+.btn-sair {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-sair:hover {
+  background-color: #c82333;
+  border-color: #c82333;
+}
+
+/*CABEÇALHO*/
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+
+  color: #003366;
+}
+
+.header h2 {
+  margin: 0;
+
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/*CONTEÚDO PRINCIPAL E TABELA*/
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3.5rem 2.5rem 4rem;
+}
+
+.agendamentos-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.08);
+}
+
+.agendamentos-table th,
+.agendamentos-table td {
+  padding: 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e7ff;
+}
+
+.agendamentos-table th {
+  background-color: #f8f9fa;
+  font-weight: 700;
+  color: #003366;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.agendamentos-table tr:hover {
+  background-color: #fcfcfc;
+}
+
+/*BADGES (STATUS)*/
+.badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pendente {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.confirmado {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.cancelado {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  text-decoration: line-through;
+}
+
+/*AÇÕES E BOTÕES*/
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-primary {
+  background-color: #0056b3;
+  color: white;
+  padding: 0.7rem 1.2rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #004085;
+}
+
+.btn-primary:disabled {
+  background-color: #a0c4ff;
+  cursor: not-allowed;
+}
+
+.btn-confirmar {
+  background-color: #e6f4ea;
+  color: #1e8e3e;
+}
+
+.btn-confirmar:hover {
+  background-color: #ceead6;
+}
+
+.btn-cancelar {
+  background-color: #fce8e6;
+  color: #d93025;
+}
+
+.btn-cancelar:hover {
+  background-color: #fad2cf;
+}
+
+.btn-edit {
+  background-color: #e0e7ff;
+  color: #0056b3;
+}
+
+.btn-edit:hover {
+  background-color: #c7d2fe;
+}
+
+.btn-delete {
+  background-color: #ffeef0;
+  color: #dc3545;
+}
+
+.btn-delete:hover {
+  background-color: #ffcdd2;
+}
+
+/*MODAL E FORMULÁRIOS*/
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 30, 60, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  width: calc(100% - 2rem);
+  max-width: 450px;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  margin: 0 0 1.5rem;
+  color: #004085;
+}
+
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #0056b3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}

@@ -151,7 +151,8 @@ public class AgendamentoService {
                 agendamento.getNomeCliente(),
                 null,
                 agendamento.getStatus(),
-                nomeProfissional
+                nomeProfissional,
+                agendamento.getEmail()
         );
     }
 
@@ -171,7 +172,8 @@ public class AgendamentoService {
                 agendamento.getNomeCliente(),
                 procDTO,
                 agendamento.getStatus(),
-                nomeProfissional
+                nomeProfissional,
+                agendamento.getEmail()
         );
     }
 }
