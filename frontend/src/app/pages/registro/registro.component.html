@@ -1,0 +1,37 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="brand">BellaGestora</div>
+    <h2>Criar Conta</h2>
+    <p>Cadastre-se para agendar e gerenciar seus procedimentos.</p>
+
+    <form [formGroup]="registroForm" (ngSubmit)="registrar()">
+      
+      <div class="input-group">
+        <label>Usuário (Login)</label>
+        <input type="text" formControlName="login" placeholder="Ex: maria.silva">
+      </div>
+
+      <div class="input-group">
+        <label>Senha</label>
+        <input type="password" formControlName="password" placeholder="Mínimo de 6 caracteres">
+      </div>
+
+      <div class="input-group">
+        <label>Tipo de Conta</label>
+        <select formControlName="role">
+          <option value="USER">Sou Cliente (Agendar serviços)</option>
+          <option value="ADMIN">Sou Profissional (Gerenciar sistema)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="registroForm.invalid">
+        Cadastrar
+      </button>
+
+    </form>
+
+    <div class="footer-links">
+      Já tem uma conta? <a (click)="irParaLogin()">Faça login aqui</a>
+    </div>
+  </div>
+</div>

@@ -22,6 +22,10 @@ export class LoginComponent {
 
   mensagemErro = ''
 
+  irParaRegistro() {
+    this.router.navigate(['/registro']);
+  }
+  
   onSubmit(){
     if(this.loginForm.valid){
       this.authService.login(this.loginForm.value).subscribe({

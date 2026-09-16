@@ -91,3 +91,24 @@ button:disabled {
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
 }
+
+/*LINKS DO RODAPÉ (CRIAR CONTA)*/
+.footer-links {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #555;
+  text-align: center;
+}
+
+.footer-links a {
+  color: #0056b3;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: #004085;
+}
